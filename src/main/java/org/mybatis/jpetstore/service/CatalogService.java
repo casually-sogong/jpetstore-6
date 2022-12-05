@@ -36,17 +36,13 @@ public class CatalogService {
   private final CategoryMapper categoryMapper;
   private final ItemMapper itemMapper;
   private final ProductMapper productMapper;
-  private final ReviewMapper reviewMapper;
-  private final ReviewRatingMapper reviewRatingMapper;
 
   private final InventoryMapper inventoryMapper;
 
-  public CatalogService(CategoryMapper categoryMapper, ItemMapper itemMapper, ProductMapper productMapper, ReviewMapper reviewMapper, ReviewRatingMapper reviewRatingMapper, InventoryMapper inventoryMapper) {
+  public CatalogService(CategoryMapper categoryMapper, ItemMapper itemMapper, ProductMapper productMapper, InventoryMapper inventoryMapper) {
     this.categoryMapper = categoryMapper;
     this.itemMapper = itemMapper;
     this.productMapper = productMapper;
-    this.reviewMapper=reviewMapper;
-    this.reviewRatingMapper=reviewRatingMapper;
     this.inventoryMapper = inventoryMapper;
   }
 
@@ -121,33 +117,6 @@ public class CatalogService {
 
   public boolean isItemInStock(String itemId) {
     return itemMapper.getInventoryQuantity(itemId) > 0;
-  }
-
-  public List<Review> getReviewList(String productId) {return reviewMapper.getReivewListByProductId(productId);  }
-
-
-
-  public Map<String, Double> getRatingMapByCategory(String categoryId){
-    Map<String, Double> result = new HashMap<>();
-    List<Product> products = productMapper.getProductListByCategory(categoryId);
-    for(Product product:products){
-      String productId = product.getProductId();
-      Double avg = getAverageRatingByProductId(productId);
-      if (avg == null) continue;
-      result.put(productId, Math.round(getAverageRatingByProductId(productId)*100)/100.0);
-    }
-    return result;
-  }
-
-  public Double getAverageRatingByProductId(String productId){
-    List<Integer> ratings = new ArrayList<>();
-    List<Review> reviews = reviewMapper.getReivewListByProductId(productId);
-    if(reviews.isEmpty()) return null;
-    for(Review review:reviews){
-      String reviewId = review.getReviewId();
-      reviewRatingMapper.getReviewRatingByReviewId(reviewId).forEach(reviewRating -> ratings.add(reviewRating.getRating()));
-    }
-    return ratings.stream().mapToDouble(num -> (double) num).sum() / ratings.size();
   }
 
 }

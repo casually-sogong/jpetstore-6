@@ -7,7 +7,10 @@ import org.mybatis.jpetstore.mapper.ReviewRatingMapper;
 import org.mybatis.jpetstore.mapper.SequenceMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReviewService {
@@ -72,4 +75,33 @@ public class ReviewService {
             reviewMapper.insertReviewRating(rr);
         }
     }
+
+
+    public List<Review> getReviewList(String productId) {return reviewMapper.getReivewListByProductId(productId);  }
+
+
+
+    public Map<String, Double> getRatingMapByCategory(String categoryId){
+        Map<String, Double> result = new HashMap<>();
+        List<Product> products = productMapper.getProductListByCategory(categoryId);
+        for(Product product:products){
+            String productId = product.getProductId();
+            Double avg = getAverageRatingByProductId(productId);
+            if (avg == null) continue;
+            result.put(productId, Math.round(getAverageRatingByProductId(productId)*100)/100.0);
+        }
+        return result;
+    }
+
+    public Double getAverageRatingByProductId(String productId){
+        List<Integer> ratings = new ArrayList<>();
+        List<Review> reviews = reviewMapper.getReivewListByProductId(productId);
+        if(reviews.isEmpty()) return null;
+        for(Review review:reviews){
+            String reviewId = review.getReviewId();
+            reviewRatingMapper.getReviewRatingByReviewId(reviewId).forEach(reviewRating -> ratings.add(reviewRating.getRating()));
+        }
+        return ratings.stream().mapToDouble(num -> (double) num).sum() / ratings.size();
+    }
+
 }

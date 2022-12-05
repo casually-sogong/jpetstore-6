@@ -30,6 +30,7 @@ import org.mybatis.jpetstore.domain.Item;
 import org.mybatis.jpetstore.domain.Product;
 import org.mybatis.jpetstore.domain.Review;
 import org.mybatis.jpetstore.service.CatalogService;
+import org.mybatis.jpetstore.service.ReviewService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,6 +56,9 @@ public class CatalogActionBean extends AbstractActionBean {
 
   @SpringBean
   private transient CatalogService catalogService;
+
+  @SpringBean
+  private transient ReviewService reviewService;
 
   private String keyword;
 
@@ -180,7 +184,7 @@ public class CatalogActionBean extends AbstractActionBean {
     if (categoryId != null) {
       productList = catalogService.getProductListByCategory(categoryId);
       category = catalogService.getCategory(categoryId);
-      averageRatingMap = catalogService.getRatingMapByCategory(categoryId);
+      averageRatingMap = reviewService.getRatingMapByCategory(categoryId);
     }
     return new ForwardResolution(VIEW_CATEGORY);
   }
@@ -194,7 +198,7 @@ public class CatalogActionBean extends AbstractActionBean {
     if (productId != null) {
       itemList = catalogService.getItemListByProduct(productId);
       product = catalogService.getProduct(productId);
-      reviewList = catalogService.getReviewList(productId);
+      reviewList = reviewService.getReviewList(productId);
     }
     return new ForwardResolution(VIEW_PRODUCT);
   }
