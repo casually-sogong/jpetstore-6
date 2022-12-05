@@ -99,7 +99,7 @@ public class ReviewActionBean extends AbstractActionBean {
       product = reviewService.getProduct(review.getProductId());
       ratingList = reviewService.getReviewRatingById(review.getReviewId());
 
-      if (accountBean != null) {
+      if (accountBean != null && accountBean.getUsername() != null) {
         isReviewOwner = accountBean.getAccount().getUsername().equals(review.getUserId());
       }
       else {
