@@ -356,3 +356,13 @@ body>#Banner {
   background-color:#ccc;
   text-align:left;
 }
+
+#Review {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#Review > table {
+  min-width: 300px;
+}

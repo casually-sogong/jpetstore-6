@@ -12,12 +12,12 @@
   <table>
     <tr>
       <td>
-        <b>${actionBean.review.title}</b>
+        <b>Title: ${actionBean.review.title}</b>
       </td>
     </tr>
     <tr>
       <td>
-        <b>${actionBean.product.name}</b>
+        <b>Product: ${actionBean.product.name}</b>
       </td>
     </tr>
     <tr>
