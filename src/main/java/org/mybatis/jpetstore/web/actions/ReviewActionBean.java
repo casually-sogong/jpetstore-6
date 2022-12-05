@@ -115,7 +115,7 @@ public class ReviewActionBean extends AbstractActionBean {
     AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
 
     review = reviewService.getReviewById(reviewId);
-    if (accountBean != null) {
+    if (accountBean != null && accountBean.getUsername() != null) {
       isReviewOwner = accountBean.getAccount().getUsername().equals(review.getUserId());
     }
     else {
@@ -133,7 +133,7 @@ public class ReviewActionBean extends AbstractActionBean {
     HttpSession session = context.getRequest().getSession();
     AccountActionBean accountBean = (AccountActionBean) session.getAttribute("/actions/Account.action");
 
-    if (itemId != null) {
+    if (itemId != null  && accountBean.getUsername() != null) {
       product = reviewService.getProductById(itemId);
       userId = accountBean.getAccount().getUsername();
       ratingList = new ArrayList<ReviewRating>();
