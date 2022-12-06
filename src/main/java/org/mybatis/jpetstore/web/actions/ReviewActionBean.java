@@ -145,7 +145,7 @@ public class ReviewActionBean extends AbstractActionBean {
 
   public Resolution newReview() {
     HttpSession session = context.getRequest().getSession();
-    if (review != null) {
+    if (review != null && review.getTitle() != null && review.getContent() != null) {
       review.setProductId(product.getProductId());
       review.setUserId(userId);
       review = reviewService.insertReview(review);
@@ -157,7 +157,8 @@ public class ReviewActionBean extends AbstractActionBean {
       reviewService.insertReviewRating(ratingList);
       return new RedirectResolution(CatalogActionBean.class, "viewProduct");
     } else {
-      setMessage("An error occurred processing your order (review was null).");
+      setMessage("An error occurred processing your review (review was null). " +
+              "Please check the blank.");
       return new ForwardResolution(ERROR);
     }
   }
