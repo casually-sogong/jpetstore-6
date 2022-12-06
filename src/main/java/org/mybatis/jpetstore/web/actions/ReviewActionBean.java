@@ -139,6 +139,7 @@ public class ReviewActionBean extends AbstractActionBean {
       ratingList = new ArrayList<ReviewRating>();
       ratingList.add(new ReviewRating("money"));
       ratingList.add(new ReviewRating("alone"));
+      ratingList.add(new ReviewRating("clean"));
     }
     return new ForwardResolution(VIEW_WRITE_REVIEW);
   }
